@@ -60,3 +60,11 @@ def test_teacher_custom_words():
     assert not check_text("Das ist ein Banane", "medium", blocked=["banane"]).ok
     assert not check_text("Bananenbrot", "medium", blocked=["banane"]).ok
     assert check_text("Du Idiot", "medium", allowed=["idiot"]).ok
+
+
+def test_repeat_detection_right_after_boot(monkeypatch):
+    # time.monotonic() starts near 0 on a freshly booted machine (e.g. Raspberry Pi, CI runner)
+    from classpulse.filter import engine
+    monkeypatch.setattr(engine.time, "monotonic", lambda: 5.0)
+    r = engine.RecentMessages()
+    assert r.is_repeat("k") is False and r.is_repeat("k") is True

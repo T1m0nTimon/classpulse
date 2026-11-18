@@ -231,7 +231,8 @@ class RecentMessages:
         t = time.monotonic()
         if len(self.seen) > 20_000:
             self.seen = {k: v for k, v in self.seen.items() if v > t - self.window}
-        if self.seen.get(key, 0) > t - self.window:
+        last = self.seen.get(key)
+        if last is not None and last > t - self.window:  # no default 0: monotonic() can be < window after boot
             return True
         self.seen[key] = t
         return False
