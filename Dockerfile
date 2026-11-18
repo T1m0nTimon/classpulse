@@ -1,5 +1,5 @@
 # ---- build the frontend ----
-FROM node:22-alpine AS web
+FROM node:22-slim AS web
 WORKDIR /web
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
