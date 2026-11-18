@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-accent: #0a84ff;
+  --color-accent-dark: #0060df;
+  --color-ok: #30d158;
+  --color-warn: #ff9f0a;
+  --color-bad: #ff453a;
+}
+
+:root {
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6e6e73;
+  --line: #e5e5ea;
+  --soft: #f0f0f3;
+  color-scheme: light;
+}
+.dark {
+  --bg: #000000;
+  --card: #1c1c1e;
+  --text: #f5f5f7;
+  --muted: #98989d;
+  --line: #38383a;
+  --soft: #2c2c2e;
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  /* iPhone notch / home indicator */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* iOS Safari zooms into inputs below 16px - never let that happen */
+input, textarea, select { font-size: max(16px, 1em); }
+
+@layer components {
+  .card { background: var(--card); border-radius: 1.25rem; box-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04); }
+  .muted { color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    min-height: 48px; padding: 0 1.25rem; border-radius: 9999px; font-weight: 600;
+    transition: transform .12s ease, background-color .15s ease, opacity .15s; user-select: none; cursor: pointer;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn:disabled { opacity: .45; pointer-events: none; }
+  .btn-primary { background: var(--color-accent); color: white; }
+  .btn-primary:hover { background: var(--color-accent-dark); }
+  .btn-soft { background: var(--soft); color: var(--text); }
+  .btn-danger { background: color-mix(in srgb, var(--color-bad) 14%, transparent); color: var(--color-bad); }
+  .btn-sm { min-height: 40px; padding: 0 .9rem; font-size: .9rem; }
+  .field {
+    width: 100%; min-height: 52px; padding: .75rem 1rem; border-radius: .9rem; background: var(--soft);
+    color: var(--text); border: 2px solid transparent; outline: none; transition: border-color .15s;
+  }
+  .field:focus { border-color: var(--color-accent); }
+  .pill { display: inline-flex; align-items: center; gap: .35rem; border-radius: 9999px; padding: .2rem .7rem; font-size: .8rem; font-weight: 600; }
+}
+
+.fade-in { animation: fade .25s ease both; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
